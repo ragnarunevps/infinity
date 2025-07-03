@@ -2,15 +2,38 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { PlayCircle } from "lucide-react";
 
+// Official release: Sept 12 2025 at 00:00 IST → add 3h for our activation portal
+const RELEASE = new Date("2025-09-12T03:00:00+05:30");
+
 export default function DemonSlayerSite() {
   const [loading, setLoading] = useState(true);
   const [showVideo, setShowVideo] = useState(false);
+  const [timeDiff, setTimeDiff] = useState(getDiff());
 
   useEffect(() => {
     document.title = "Demon Slayer: Infinity Castle";
-    const timer = setTimeout(() => setLoading(false), 2000);
-    return () => clearTimeout(timer);
+    const loadTimer = setTimeout(() => setLoading(false), 2000);
+
+    const interval = setInterval(() => {
+      setTimeDiff(getDiff());
+    }, 1000);
+
+    return () => {
+      clearTimeout(loadTimer);
+      clearInterval(interval);
+    };
   }, []);
+
+  function getDiff() {
+    const now = new Date();
+    const diff = RELEASE - now;
+    if (diff <= 0) return null;
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const mins = Math.floor((diff / (1000 * 60)) % 60);
+    const secs = Math.floor((diff / 1000) % 60);
+    return { days, hours, mins, secs };
+  }
 
   const scrollToVideo = () => {
     setShowVideo(true);
@@ -19,12 +42,17 @@ export default function DemonSlayerSite() {
     }, 100);
   };
 
+  const renderCountdown = () => {
+    if (!timeDiff) return null;
+    const { days, hours, mins, secs } = timeDiff;
+    if (days > 0) return `${days} day${days>1?'s':''} ${hours} h ${mins} m`;
+    return `${hours} h ${mins} m ${secs} s`;
+  };
+
   return (
     <main className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-6 relative overflow-hidden">
-      {/* Background Image */}
       <div className="absolute inset-0 z-0 bg-[url('/castle-bg.jpg')] bg-cover bg-center opacity-40" />
 
-      {/* Loading Screen */}
       {loading ? (
         <motion.div
           initial={{ opacity: 1 }}
@@ -43,48 +71,42 @@ export default function DemonSlayerSite() {
         </motion.div>
       ) : null}
 
-      {/* Main Content */}
       {!loading && (
         <div className="relative z-10 flex flex-col items-center">
-          <motion.h1
+          <motion.h1 className="text-4xl md:text-6xl font-extrabold text-center bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 bg-clip-text text-transparent drop-shadow-lg"
             initial={{ opacity: 0, y: -40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2 }}
-            className="text-4xl md:text-6xl font-extrabold text-center bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 bg-clip-text text-transparent drop-shadow-lg"
           >
             Demon Slayer: Infinity Castle Arc
           </motion.h1>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.5, delay: 0.5 }}
-            className="mt-6 max-w-xl text-center text-lg md:text-xl text-gray-200"
+          <motion.p className="mt-4 text-xl text-gray-200"
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: .5 }}
           >
-            Experience the ultimate showdown in the most beautifully animated arc of Demon Slayer. Watch now in HD.
+            {timeDiff ? `Releasing in ${renderCountdown()}` : 'Now Streaming!'}
           </motion.p>
 
-          {/* Watch Now Button */}
           <motion.button
             onClick={scrollToVideo}
+            disabled={!timeDiff}
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, delay: 1 }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="mt-10 inline-flex items-center gap-2 px-6 py-3 text-lg font-semibold bg-gradient-to-tr from-purple-600 to-pink-600 rounded-2xl shadow-lg cursor-pointer pointer-events-auto z-20"
+            whileHover={timeDiff ? { scale: 1.05 } : {}}
+            className={`mt-6 inline-flex items-center gap-2 px-6 py-3 text-lg font-semibold rounded-2xl shadow-lg transition-transform ${
+              timeDiff
+                ? "bg-gradient-to-tr from-purple-600 to-pink-600 cursor-not-allowed opacity-50"
+                : "bg-gradient-to-tr from-purple-600 to-pink-600 cursor-pointer hover:scale-105"
+            }`}
           >
             <PlayCircle className="w-6 h-6" />
-            Watch Now
+            {timeDiff ? "Coming Soon" : "Watch Now"}
           </motion.button>
 
-          {/* Embedded Video */}
-          {showVideo && (
-            <motion.div
-              id="video-container"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1 }}
+          {showVideo && !timeDiff && (
+            <motion.div id="video-container"
+              initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}
               className="mt-12 w-full max-w-4xl aspect-video z-10"
             >
               <div className="w-full h-full rounded-xl overflow-hidden shadow-xl border-2 border-pink-500">
