@@ -25,15 +25,24 @@ export default function DemonSlayerSite() {
       <div className="absolute inset-0 z-0 bg-[url('/castle-bg.jpg')] bg-cover bg-center opacity-40" />
 
       {/* Loader */}
-      <AnimatePresence>
-        {loading && (
-          <motion.div
-            key="loader"
-            initial={{ opacity: 1 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="absolute inset-0 z-50 bg-black flex items-center justify-center"
-          >
+      {loading ? (
+  <motion.div
+    initial={{ opacity: 1 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+    onAnimationComplete={() => setLoading(false)}
+    className="absolute inset-0 z-50 bg-black flex items-center justify-center"
+  >
+    <motion.div
+      initial={{ scale: 0.5 }}
+      animate={{ scale: 1.2 }}
+      exit={{ scale: 0 }}
+      transition={{ repeat: Infinity, repeatType: "reverse", duration: 1 }}
+      className="w-16 h-16 rounded-full bg-gradient-to-r from-purple-500 via-pink-500 to-yellow-500 blur-xl animate-pulse"
+    />
+  </motion.div>
+) : null}
+
             <motion.div
               initial={{ scale: 0.5 }}
               animate={{ scale: 1.2 }}
