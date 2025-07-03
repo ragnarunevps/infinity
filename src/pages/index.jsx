@@ -21,10 +21,10 @@ export default function DemonSlayerSite() {
 
   return (
     <main className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-6 relative overflow-hidden">
-      {/* Background */}
+      {/* BG */}
       <div className="absolute inset-0 z-0 bg-[url('/castle-bg.jpg')] bg-cover bg-center opacity-40" />
 
-      {/* Loading */}
+      {/* Loader */}
       <AnimatePresence>
         {loading && (
           <motion.div
@@ -45,9 +45,9 @@ export default function DemonSlayerSite() {
         )}
       </AnimatePresence>
 
-      {/* Main content */}
+      {/* Content */}
       {!loading && (
-        <div className="relative z-10 flex flex-col items-center">
+        <div className="relative z-20 flex flex-col items-center">
           <motion.h1
             initial={{ opacity: 0, y: -40 }}
             animate={{ opacity: 1, y: 0 }}
@@ -66,22 +66,21 @@ export default function DemonSlayerSite() {
             Experience the ultimate showdown in the most beautifully animated arc of Demon Slayer. Watch now in HD.
           </motion.p>
 
-          <motion.div
+          {/* Redesigned button */}
+          <motion.button
+            onClick={scrollToVideo}
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, delay: 1 }}
-            className="mt-10"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="mt-10 inline-flex items-center gap-2 px-6 py-3 text-lg font-semibold bg-gradient-to-tr from-purple-600 to-pink-600 rounded-2xl shadow-lg cursor-pointer pointer-events-auto"
           >
-            <button
-              onClick={scrollToVideo}
-              className="cursor-pointer inline-flex items-center gap-2 px-6 py-3 text-lg font-semibold bg-gradient-to-tr from-purple-600 to-pink-600 rounded-2xl shadow-lg hover:scale-105 transition-transform"
-            >
-              <PlayCircle className="w-6 h-6" />
-              Watch Now
-            </button>
-          </motion.div>
+            <PlayCircle className="w-6 h-6" />
+            Watch Now
+          </motion.button>
 
-          {/* Embedded Video (Initially Hidden) */}
+          {/* Embedded iframe */}
           <AnimatePresence>
             {showVideo && (
               <motion.div
@@ -90,7 +89,7 @@ export default function DemonSlayerSite() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 1 }}
-                className="mt-12 w-full max-w-4xl aspect-video z-10"
+                className="mt-12 w-full max-w-4xl aspect-video"
               >
                 <div className="w-full h-full rounded-xl overflow-hidden shadow-xl border-2 border-pink-500">
                   <iframe
