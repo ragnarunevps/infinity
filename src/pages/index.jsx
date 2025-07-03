@@ -4,6 +4,7 @@ import { PlayCircle } from "lucide-react";
 
 export default function DemonSlayerSite() {
   const [loading, setLoading] = useState(true);
+  const [showVideo, setShowVideo] = useState(false);
 
   useEffect(() => {
     document.title = "Demon Slayer: Infinity Castle";
@@ -11,12 +12,19 @@ export default function DemonSlayerSite() {
     return () => clearTimeout(timer);
   }, []);
 
+  const scrollToVideo = () => {
+    setShowVideo(true);
+    setTimeout(() => {
+      document.getElementById("video-container")?.scrollIntoView({ behavior: "smooth" });
+    }, 100);
+  };
+
   return (
     <main className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-6 relative overflow-hidden">
-      {/* background image layer */}
+      {/* Background */}
       <div className="absolute inset-0 z-0 bg-[url('/castle-bg.jpg')] bg-cover bg-center opacity-40" />
 
-      {/* loading screen */}
+      {/* Loading */}
       <AnimatePresence>
         {loading && (
           <motion.div
@@ -64,16 +72,37 @@ export default function DemonSlayerSite() {
             transition={{ duration: 1, delay: 1 }}
             className="mt-10"
           >
-            <a
-              href="https://drive.google.com/file/d/1fCy3zcx_woCR0xfrRxHI5j3j1REp7dtJ/view?usp=sharing"
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              onClick={scrollToVideo}
               className="cursor-pointer inline-flex items-center gap-2 px-6 py-3 text-lg font-semibold bg-gradient-to-tr from-purple-600 to-pink-600 rounded-2xl shadow-lg hover:scale-105 transition-transform"
             >
               <PlayCircle className="w-6 h-6" />
               Watch Now
-            </a>
+            </button>
           </motion.div>
+
+          {/* Embedded Video (Initially Hidden) */}
+          <AnimatePresence>
+            {showVideo && (
+              <motion.div
+                id="video-container"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 1 }}
+                className="mt-12 w-full max-w-4xl aspect-video z-10"
+              >
+                <div className="w-full h-full rounded-xl overflow-hidden shadow-xl border-2 border-pink-500">
+                  <iframe
+                    src="https://drive.google.com/file/d/1fCy3zcx_woCR0xfrRxHI5j3j1REp7dtJ/preview"
+                    allow="autoplay"
+                    allowFullScreen
+                    className="w-full h-full"
+                  ></iframe>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       )}
     </main>
