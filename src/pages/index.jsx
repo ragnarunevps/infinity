@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { PlayCircle } from "lucide-react";
 
 export default function DemonSlayerSite() {
@@ -21,42 +21,31 @@ export default function DemonSlayerSite() {
 
   return (
     <main className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-6 relative overflow-hidden">
-      {/* BG */}
+      {/* Background Image */}
       <div className="absolute inset-0 z-0 bg-[url('/castle-bg.jpg')] bg-cover bg-center opacity-40" />
 
-      {/* Loader */}
+      {/* Loading Screen */}
       {loading ? (
-  <motion.div
-    initial={{ opacity: 1 }}
-    animate={{ opacity: 1 }}
-    exit={{ opacity: 0 }}
-    onAnimationComplete={() => setLoading(false)}
-    className="absolute inset-0 z-50 bg-black flex items-center justify-center"
-  >
-    <motion.div
-      initial={{ scale: 0.5 }}
-      animate={{ scale: 1.2 }}
-      exit={{ scale: 0 }}
-      transition={{ repeat: Infinity, repeatType: "reverse", duration: 1 }}
-      className="w-16 h-16 rounded-full bg-gradient-to-r from-purple-500 via-pink-500 to-yellow-500 blur-xl animate-pulse"
-    />
-  </motion.div>
-) : null}
+        <motion.div
+          initial={{ opacity: 1 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onAnimationComplete={() => setLoading(false)}
+          className="absolute inset-0 z-50 bg-black flex items-center justify-center"
+        >
+          <motion.div
+            initial={{ scale: 0.5 }}
+            animate={{ scale: 1.2 }}
+            exit={{ scale: 0 }}
+            transition={{ repeat: Infinity, repeatType: "reverse", duration: 1 }}
+            className="w-16 h-16 rounded-full bg-gradient-to-r from-purple-500 via-pink-500 to-yellow-500 blur-xl animate-pulse"
+          />
+        </motion.div>
+      ) : null}
 
-            <motion.div
-              initial={{ scale: 0.5 }}
-              animate={{ scale: 1.2 }}
-              exit={{ scale: 0 }}
-              transition={{ repeat: Infinity, repeatType: "reverse", duration: 1 }}
-              className="w-16 h-16 rounded-full bg-gradient-to-r from-purple-500 via-pink-500 to-yellow-500 blur-xl animate-pulse"
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Content */}
+      {/* Main Content */}
       {!loading && (
-        <div className="relative z-20 flex flex-col items-center">
+        <div className="relative z-10 flex flex-col items-center">
           <motion.h1
             initial={{ opacity: 0, y: -40 }}
             animate={{ opacity: 1, y: 0 }}
@@ -75,7 +64,7 @@ export default function DemonSlayerSite() {
             Experience the ultimate showdown in the most beautifully animated arc of Demon Slayer. Watch now in HD.
           </motion.p>
 
-          {/* Redesigned button */}
+          {/* Watch Now Button */}
           <motion.button
             onClick={scrollToVideo}
             initial={{ opacity: 0, scale: 0.8 }}
@@ -83,34 +72,31 @@ export default function DemonSlayerSite() {
             transition={{ duration: 1, delay: 1 }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="mt-10 inline-flex items-center gap-2 px-6 py-3 text-lg font-semibold bg-gradient-to-tr from-purple-600 to-pink-600 rounded-2xl shadow-lg cursor-pointer pointer-events-auto"
+            className="mt-10 inline-flex items-center gap-2 px-6 py-3 text-lg font-semibold bg-gradient-to-tr from-purple-600 to-pink-600 rounded-2xl shadow-lg cursor-pointer pointer-events-auto z-20"
           >
             <PlayCircle className="w-6 h-6" />
             Watch Now
           </motion.button>
 
-          {/* Embedded iframe */}
-          <AnimatePresence>
-            {showVideo && (
-              <motion.div
-                id="video-container"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 1 }}
-                className="mt-12 w-full max-w-4xl aspect-video"
-              >
-                <div className="w-full h-full rounded-xl overflow-hidden shadow-xl border-2 border-pink-500">
-                  <iframe
-                    src="https://drive.google.com/file/d/1fCy3zcx_woCR0xfrRxHI5j3j1REp7dtJ/preview"
-                    allow="autoplay"
-                    allowFullScreen
-                    className="w-full h-full"
-                  ></iframe>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+          {/* Embedded Video */}
+          {showVideo && (
+            <motion.div
+              id="video-container"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1 }}
+              className="mt-12 w-full max-w-4xl aspect-video z-10"
+            >
+              <div className="w-full h-full rounded-xl overflow-hidden shadow-xl border-2 border-pink-500">
+                <iframe
+                  src="https://drive.google.com/file/d/1fCy3zcx_woCR0xfrRxHI5j3j1REp7dtJ/preview"
+                  allow="autoplay"
+                  allowFullScreen
+                  className="w-full h-full"
+                ></iframe>
+              </div>
+            </motion.div>
+          )}
         </div>
       )}
     </main>
