@@ -12,7 +12,11 @@ export default function DemonSlayerSite() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-purple-900 text-white flex flex-col items-center justify-center p-6 relative overflow-hidden">
+    <main className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-6 relative overflow-hidden">
+      {/* background image layer */}
+      <div className="absolute inset-0 z-0 bg-[url('/castle-bg.jpg')] bg-cover bg-center opacity-40" />
+
+      {/* loading screen */}
       <AnimatePresence>
         {loading && (
           <motion.div
@@ -33,8 +37,9 @@ export default function DemonSlayerSite() {
         )}
       </AnimatePresence>
 
+      {/* Main content */}
       {!loading && (
-        <>
+        <div className="relative z-10 flex flex-col items-center">
           <motion.h1
             initial={{ opacity: 0, y: -40 }}
             animate={{ opacity: 1, y: 0 }}
@@ -48,7 +53,7 @@ export default function DemonSlayerSite() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.5, delay: 0.5 }}
-            className="mt-6 max-w-xl text-center text-lg md:text-xl text-gray-300"
+            className="mt-6 max-w-xl text-center text-lg md:text-xl text-gray-200"
           >
             Experience the ultimate showdown in the most beautifully animated arc of Demon Slayer. Watch now in HD.
           </motion.p>
@@ -63,20 +68,13 @@ export default function DemonSlayerSite() {
               href="https://drive.google.com/file/d/1fCy3zcx_woCR0xfrRxHI5j3j1REp7dtJ/view?usp=sharing"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 text-lg font-semibold bg-gradient-to-tr from-purple-600 to-pink-600 rounded-2xl shadow-lg hover:scale-105 transition-transform cursor-pointer"
+              className="cursor-pointer inline-flex items-center gap-2 px-6 py-3 text-lg font-semibold bg-gradient-to-tr from-purple-600 to-pink-600 rounded-2xl shadow-lg hover:scale-105 transition-transform"
             >
               <PlayCircle className="w-6 h-6" />
               Watch Now
             </a>
           </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.2 }}
-            transition={{ duration: 3, delay: 2 }}
-            className="absolute inset-0 bg-[url('/castle-bg.jpg')] bg-cover bg-center blur-3xl"
-          />
-        </>
+        </div>
       )}
     </main>
   );
