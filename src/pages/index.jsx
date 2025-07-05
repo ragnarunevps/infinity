@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { PlayCircle } from "lucide-react";
 
-// Official release: Sept 12 2025 at 00:00 IST → add 3h for our activation portal
-const RELEASE = new Date("2025-09-12T03:00:00+05:30");
+// Updated countdown till 1 day after release: Sept 13, 2025 at 03:00 IST
+const RELEASE = new Date("2025-09-13T03:00:00+05:30");
 
 export default function DemonSlayerSite() {
   const [loading, setLoading] = useState(true);
@@ -45,7 +45,7 @@ export default function DemonSlayerSite() {
   const renderCountdown = () => {
     if (!timeDiff) return null;
     const { days, hours, mins, secs } = timeDiff;
-    if (days > 0) return `${days} day${days>1?'s':''} ${hours} h ${mins} m`;
+    if (days > 0) return `${days} day${days > 1 ? "s" : ""} ${hours} h ${mins} m`;
     return `${hours} h ${mins} m ${secs} s`;
   };
 
@@ -73,7 +73,8 @@ export default function DemonSlayerSite() {
 
       {!loading && (
         <div className="relative z-10 flex flex-col items-center">
-          <motion.h1 className="text-4xl md:text-6xl font-extrabold text-center bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 bg-clip-text text-transparent drop-shadow-lg"
+          <motion.h1
+            className="text-4xl md:text-6xl font-extrabold text-center bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 bg-clip-text text-transparent drop-shadow-lg"
             initial={{ opacity: 0, y: -40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2 }}
@@ -81,19 +82,22 @@ export default function DemonSlayerSite() {
             Demon Slayer: Infinity Castle Arc
           </motion.h1>
 
-          <motion.p className="mt-4 text-xl text-gray-200"
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: .5 }}
+          <motion.p
+            className="mt-4 text-xl text-gray-200"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
           >
-            {timeDiff ? `Releasing in ${renderCountdown()}` : 'Now Streaming!'}
+            {timeDiff ? `Releasing in ${renderCountdown()}` : "Now Streaming!"}
           </motion.p>
 
           <motion.button
             onClick={scrollToVideo}
-            disabled={!timeDiff}
+            disabled={!!timeDiff}
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, delay: 1 }}
-            whileHover={timeDiff ? { scale: 1.05 } : {}}
+            whileHover={timeDiff ? {} : { scale: 1.05 }}
             className={`mt-6 inline-flex items-center gap-2 px-6 py-3 text-lg font-semibold rounded-2xl shadow-lg transition-transform ${
               timeDiff
                 ? "bg-gradient-to-tr from-purple-600 to-pink-600 cursor-not-allowed opacity-50"
@@ -105,13 +109,16 @@ export default function DemonSlayerSite() {
           </motion.button>
 
           {showVideo && !timeDiff && (
-            <motion.div id="video-container"
-              initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}
+            <motion.div
+              id="video-container"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1 }}
               className="mt-12 w-full max-w-4xl aspect-video z-10"
             >
               <div className="w-full h-full rounded-xl overflow-hidden shadow-xl border-2 border-pink-500">
                 <iframe
-                  src="https://drive.google.com/file/d/1fCy3zcx_woCR0xfrRxHI5j3j1REp7dtJ/preview"
+                  src="https://drive.google.com/file/d/REPLACE_WITH_REAL_VIDEO_ID/preview"
                   allow="autoplay"
                   allowFullScreen
                   className="w-full h-full"
